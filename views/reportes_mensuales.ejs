@@ -1,0 +1,527 @@
+<%- include('includes/head.ejs') %>
+    <%- include('includes/topbar.ejs') %>
+        <%- include('includes/sidebar.ejs') %>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+              <div class="col py-3">
+                <div height class="container">
+                  <section class="container">
+                  <% if (success.length != 0) { %>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>(っ◔◡◔)っ ❤ </strong> <%= success %>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeAlert()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <% } %>
+                    <% if (error.length != 0) { %>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>┻━┻ ︵ヽ(`▭´)ﾉ︵﻿ ┻━┻  </strong> <%= error %>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeAlert()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <% } %>
+                    </section>
+
+                  <h1 class="display-4"><center>Reportes Mensuales</center></h1>
+                  <br><br>
+                  <!--Dropdown menu -->
+                    <div class="tab-content">
+                      Filtrar por Mes:
+                      <div class="row form-group">
+                        <div class="col-sm-3">
+
+                          <div class="input-group date" id="datepicker">
+                              <input type="text" id="search_d" name="search_d" class="form-control" autocomplete="off" placeholder="MM-YYYY">
+                              <input type="hidden" id="search_date" name="search_date">
+                              <span class="input-group-append">
+                                  <span class="input-group-text bg-white">
+                                      <i class="fa fa-calendar"></i>
+                                  </span>
+                              </span>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                          <a id="filtro2" href="/reporte_mensual">
+                            <button type="button" class="btn btn-info">Filtrar</button>
+                          </a>
+                        </div>
+
+                        <% if (userRol == 1 || userRol == 2 ) {%>
+                          <div class="col-sm-3">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal00" data-whatever="@mdo" >Agregar Reporte Mensual</button>
+                          </div>
+
+                          <div class="col-sm-2">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal113" data-whatever="@mdo">Generar Reporte</button>
+                          </div>
+                        <% } %>
+                        </div>
+                          <div class="modal fade" id="exampleModal113" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel113" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel113">Generar Reporte</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="form-group" style="text-align: left;"">
+                                      <div class="container" style="display:none;" id="myAlert">
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="myAlert2">
+                                          <strong>┻━┻ ︵ヽ(`▭´)ﾉ︵﻿ ┻━┻   </strong> Te faltaron datos por llenar
+                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeAlert()">
+                                              <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                      </div>
+
+                                      <label for="titulo_publicacion" class="col-form-label"><b>Fecha:</b></label>
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Mensual" id="Mensual" value="radio1" />
+                                        <label class="form-check-label" for="exampleRadios3">
+                                          Mensual
+                                        </label>
+                                        <div class="input-group date" id="datepicker">
+                                            <input type="text" id="mensual" name="for_radio1[]" class="radio1" autocomplete="off" placeholder="MM-YYYY" disabled="true" hidden="true">
+                                            <input type="hidden" id="secreto_mensual" name="secreto_mensual">
+                                            <input type="hidden" id="valor_radio1" name="for_radio1[]" class="radio1" value="radio1" disabled="true">
+                                        </div>
+                                      </div>
+
+                                      <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Mensual" id="Semestral" value="radio2" />
+                                        <label class="form-check-label" for="exampleRadios3">
+                                          Semestral (Probablemente no se implemente)
+                                        </label>
+                                        <div class="input-group date" id="datepicker">
+                                            <input type="text" id="semestral" name="for_radio2[]" class="radio2" autocomplete="off" placeholder="DD-MM-YYYY" disabled="true" hidden="true">
+                                            <input type="hidden" id="secreto_semestral" name="secreto_semestral">
+                                            <input type="hidden" id="valor_radio2" name="for_radio2[]" class="radio2" value="radio2" disabled="true">
+                                        </div>
+                                      </div>
+                                      <div class="form-check disabled">
+                                        <input class="form-check-input" type="radio" name="Mensual" id="Anual" value="radio3" />
+                                        <label class="form-check-label" for="exampleRadios3">
+                                          Anual
+                                        </label>
+                                        <div class="input-group date" id="datepicker">
+                                            <input type="text" id="anual" name="for_radio3[]" class="radio3" autocomplete="off" placeholder="YYYY" disabled="true" hidden="true">
+                                            <input type="hidden" id="valor_radio3" name="for_radio3[]" class="radio3" value="radio3" disabled="true">
+                                        </div>
+                                      </div>
+
+                                      <label for="tipo_reporte" class="col-sm-4 col-form-label"><b>Tipo de Reporte</b></label>
+                                      <select name="tipo_reporte" id="tipo_reporte" class="form-select" aria-label="Default select example" required>
+                                        <option value="" disabled selected>Selecciona el tipo de Reporte</option>
+                                        <option value="vacaciones">Reporte de Vacaciones</option>
+                                        <option value="ng_block">Reporte de Ng Blocks</option>
+                                      </select>
+
+                                        <label for="titulo_publicacion" class="col-form-label"><b>Escoge el estatus del reporte:</b></label>
+                                        <div class="form-check">
+                                          <input class="form-check-input" type="radio" name="estatus" id="pendientes" value="radio4" />
+                                          <label class="form-check-label" for="exampleRadios3">
+                                            Pendiente
+                                          </label>
+                                          <input type="hidden" id="pendientes_real" name="for_radio4[]" class="radio4" value="Pendiente" disabled="true">
+                                        </div>
+
+                                        <div class="form-check">
+                                          <input class="form-check-input" type="radio" name="estatus" id="aprobados" value="radio5" />
+                                          <label class="form-check-label" for="exampleRadios3">
+                                            Aprobado
+                                          </label>
+                                          <input type="hidden" id="aprobados_real" name="for_radio5[]" class="radio5" value="Aprobado" disabled="true">
+                                        </div>
+                                        <div class="form-check disabled">
+                                          <input class="form-check-input" type="radio" name="estatus" id="rechazados" value="radio6" />
+                                          <label class="form-check-label" for="exampleRadios3">
+                                            Rechazado
+                                          </label>
+                                          <input type="hidden" id="rechazados_real" name="for_radio6[]" class="radio6" value="Rechazado" disabled="true">
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                          <a id="filtro3">
+                                            <button type="button" name="boton23" id="boton23" class="btn btn-success" >Generar</button></a>
+
+                                        </div>
+
+                                      </div>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                <br><br>
+                <!--Dropdown menu -->
+
+                <% if (reportes_mensuales.length > 0) { %>
+                  <% for (let reportes_mensuales1 of reportes_mensuales) { %>
+                    <div class="container">
+                      <div class="col d-flex justify-content-center">
+                        <div class="card mb-3" style="width: 60rem;">
+                          <img class="card-img-top embed-responsive-item" src="<%= reportes_mensuales1.imagen_reporte %>" alt="Card image cap">
+                            <div class="card-body">
+                              <h5 class="card-title"><%= reportes_mensuales1.titulo_reporte_mensual %></h5>
+                              <p class="card-text"><%= reportes_mensuales1.descripcion_reporte_mensual %></p>
+                              <% if (userRol == 1 || userRol == 2 ) {%>
+                                <form action="/reporte_mensual/delete/<%= reportes_mensuales1.id_reportes_mensuales %>" method="POST">
+                                  <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                                  <input type="hidden" id="id_reportes_mensuales" name="id_reportes_mensuales" value="<%= reportes_mensuales1.id_reportes_mensuales %>"/>
+                                  <div style="text-align: right;">
+                                  <button class="btn btn-danger btn-sm rounded-0" type="submit" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="fa fa-trash"></i></button>
+                                  </div>
+                                </form>
+                              <% } %>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                <% } %>
+              <% } else { %>
+                <div class="container">
+                  <h1>No hay Reportes Mensuales de este mes.</h1>
+                </div>
+              <% } %>
+                <br><br>
+
+                <div style="text-align: center;">
+                <!--Agregar Reporte Mensual -->
+                      <div class="modal fade" id="exampleModal00" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel00" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel00">Agregar Reporte</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <!--Form -->
+                              <form action="/reporte_mensual/post/?_csrf=<%= csrfToken %>" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                                <div class="form-group" style="text-align: left;"">
+                                  <label for="titulo_reporte_mensual" class="col-form-label">Titulo del Reporte:</label>
+                                  <input type="text" class="form-control" id="titulo_reporte_mensual" name="titulo_reporte_mensual" autocomplete="off" required>
+
+                                  <label for="fecha_reporte_mensual" class="col-form-label">Mes del Reporte:</label>
+                                  <!--Datepicker -->
+                                  <div class="input-group date" id="monthpicker">
+                                      <input type="text" id="fecha_reporte_m" name="fecha_reporte_m" class="form-control" autocomplete="off" placeholder="DD-MM-YYYY" required>
+                                      <input type="hidden" id="fecha_reporte_mensual" name="fecha_reporte_mensual">
+                                      <span class="input-group-append">
+                                          <span class="input-group-text bg-white">
+                                              <i class="fa fa-calendar"></i>
+                                          </span>
+                                      </span>
+                                  </div>
+                                  <!--Datepicker -->
+
+                                  <label for="descripcion_reporte_mensual" class="col-form-label">Descripción del Reporte:</label>
+                                  <input type="text" class="form-control" id="descripcion_reporte_mensual" name="descripcion_reporte_mensual" autocomplete="off" required>
+
+                                  <label for="imagen_reporte" class="col-form-label">Imagen del Reporte Mensual:</label>
+                                  <input type="file" class="form-control" id="imagen_reporte" name="imagen_reporte" autocomplete="off" accept="image/png, image/gif, image/jpeg, image/jpg" required>
+                                  <br>
+                                  <div style="text-align: center;">
+                                    <input type="submit" value="Agregar" class="btn btn-success">
+                                  </div>
+                              </form>
+                              <!--Form -->
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!--Modal Generar Reporte Mensual -->
+              </div>
+              </div>
+              </div>
+
+
+<script type="text/javascript">
+  function showAlert(){
+      $("#myAlert").css("display", "");
+  }
+
+  $(document).ready(function(){
+       $.fn.datepicker.defaults.language = 'es';
+  });
+
+  $(function() {
+      $('#search_d').datepicker({
+        format: "mm-yyyy",
+        orientation: "bottom left",
+        startView: "months",
+        minViewMode: "months",
+        todayHighlight: true,
+        autoclose: true
+      });
+      $('#search_d').on("changeDate", function search () {
+        var f1 = $('#search_d').datepicker('getDate');
+        console.log(f1)
+        document.getElementById("search_date").value = f1.toISOString().split('T')[0];
+        var f2 = f1.toISOString().split('-01T')[0];
+        console.log(f2);
+        var href = `/reporte_mensual/filtrar/${f2}`;
+        $('#filtro2').attr('href', href);
+      });
+
+  });
+
+  $(document).ready(function(){
+  $('input[type=radio][name=Mensual]').click(function(){
+      var related_class=$(this).val();
+      $('.'+related_class).prop('disabled',false);
+      $('.'+related_class).prop('hidden',false);
+
+      $('input[type=radio][name=Mensual]').not(':checked').each(function(){
+          var other_class=$(this).val();
+          $('.'+other_class).prop('disabled',true);
+          $('.'+other_class).prop('value',"");
+          $('.'+other_class).prop('hidden',true);
+      });
+  });
+  });
+
+  $(document).ready(function(){
+  $('input[type=radio][name=estatus]').click(function(){
+      var related_class=$(this).val();
+      $('.'+related_class).prop('disabled',false);
+
+      $('input[type=radio][name=estatus]').not(':checked').each(function(){
+          var other_class=$(this).val();
+          $('.'+other_class).prop('disabled',true);
+      });
+  });
+  });
+
+  $(function() {
+      $('#mensual').datepicker({
+        format: 'mm/yyyy',
+        orientation: "bottom left",
+        startView: "months",
+        minViewMode: "months",
+        todayHighlight: true,
+        autoclose: true
+      });
+      $('#mensual').on("changeDate", function search () {
+        var f1 = $('#mensual').datepicker('getDate');
+        document.getElementById("secreto_mensual").value = f1.toISOString().split('-01T')[0];
+      });
+  });
+
+  $(function() {
+    var monthsToDisable = ['02', '03', '04', '05', '06', '08', '09', '10', '11', '12'];
+      $('#semestral').datepicker({
+        format: 'dd/mm/yyyy',
+        orientation: "bottom left",
+        startView: "months",
+        minViewMode: "months",
+        todayHighlight: true,
+        autoclose: true,
+        beforeShowMonth: function(date) {
+          var formattedDate = moment(date).format('MM');
+          return $.inArray(formattedDate, monthsToDisable) < 0;
+        }
+      });
+
+      $('#semestral').on("changeDate", function search () {
+        var f1 = $('#semestral').datepicker('getDate');
+        document.getElementById("secreto_semestral").value = f1.toISOString().split('T')[0];
+      });
+
+  });
+
+  $(function() {
+      $('#anual').datepicker({
+        format: 'yyyy',
+        orientation: "bottom left",
+        startView: "years",
+        minViewMode: "years",
+        todayHighlight: true,
+        autoclose: true
+      });
+
+  });
+
+
+$(document).ready(function() {
+  $('#boton23').click(function() {
+    var picker1 = document.getElementById("mensual").value;
+    var picker2 = document.getElementById("semestral").value;
+    var picker3 = document.getElementById("anual").value;
+
+    //console.log(picker1);
+    //console.log(picker2);
+    //console.log(picker3);
+
+    var disable1 = document.getElementById("pendientes_real").disabled;
+    var disable2 = document.getElementById("aprobados_real").disabled;
+    var disable3 = document.getElementById("rechazados_real").disabled;
+
+    //console.log(disable1);
+    //console.log(disable2);
+    //console.log(disable3);
+    var tipo_r = document.getElementById("tipo_reporte").value;
+
+    if (tipo_r.length != 0){
+      if (picker1.length != 0){
+        if (disable1 == false){
+          var b = document.getElementById("Mensual").value;
+          console.log(b);
+          var c = document.getElementById("secreto_mensual").value;
+          console.log(c);
+          var d = document.getElementById("tipo_reporte").value;
+          console.log(d);
+          var e = document.getElementById("pendientes_real").value;
+          console.log(e);
+          var href = `/reporte_mensual/generar_reporte/${b}/${c}/${d}/${e}`;
+          $('#filtro3').attr('href', href);
+        }
+
+        else if (disable2 == false){
+          var b = document.getElementById("Mensual").value;
+          console.log(b);
+          var c = document.getElementById("secreto_mensual").value;
+          console.log(c);
+          var d = document.getElementById("tipo_reporte").value;
+          console.log(d);
+          var e = document.getElementById("aprobados_real").value;
+          console.log(e);
+          var href = `/reporte_mensual/generar_reporte/${b}/${c}/${d}/${e}`;
+          $('#filtro3').attr('href', href);
+        }
+
+        else if (disable3 == false){
+          var b = document.getElementById("Mensual").value;
+          console.log(b);
+          var c = document.getElementById("secreto_mensual").value;
+          console.log(c);
+          var d = document.getElementById("tipo_reporte").value;
+          console.log(d);
+          var e = document.getElementById("rechazados_real").value;
+          console.log(e);
+          var href = `/reporte_mensual/generar_reporte/${b}/${c}/${d}/${e}`;
+          $('#filtro3').attr('href', href);
+        }
+        else{
+          $("#myAlert").css("display", "");
+        }
+      }
+
+      else if (picker2.length != 0){
+        if (disable1 == false){
+          var b = document.getElementById("Semestral").value;
+          console.log(b);
+          var c = document.getElementById("secreto_semestral").value;
+          console.log(c);
+          var d = document.getElementById("tipo_reporte").value;
+          console.log(d);
+          var e = document.getElementById("pendientes_real").value;
+          console.log(e);
+          var href = `/reporte_mensual/generar_reporte/${b}/${c}/${d}/${e}`;
+          $('#filtro3').attr('href', href);
+        }
+
+        else if (disable2 == false){
+          var b = document.getElementById("Semestral").value;
+          console.log(b);
+          var c = document.getElementById("secreto_semestral").value;
+          console.log(c);
+          var d = document.getElementById("tipo_reporte").value;
+          console.log(d);
+          var e = document.getElementById("aprobados_real").value;
+          console.log(e);
+          var href = `/reporte_mensual/generar_reporte/${b}/${c}/${d}/${e}`;
+          $('#filtro3').attr('href', href);
+        }
+
+        else if (disable3 == false){
+          var b = document.getElementById("Semestral").value;
+          console.log(b);
+          var c = document.getElementById("secreto_semestral").value;
+          console.log(c);
+          var d = document.getElementById("tipo_reporte").value;
+          console.log(d);
+          var e = document.getElementById("rechazados_real").value;
+          console.log(e);
+          var href = `/reporte_mensual/generar_reporte/${b}/${c}/${d}/${e}`;
+          $('#filtro3').attr('href', href);
+        }
+        else{
+          $("#myAlert").css("display", "");
+        }
+      }
+
+      else if (picker3.length != 0){
+        if (disable1 == false){
+          var b = document.getElementById("Anual").value;
+          console.log(b);
+          var c = document.getElementById("anual").value;
+          console.log(c);
+          var d = document.getElementById("tipo_reporte").value;
+          console.log(d);
+          var e = document.getElementById("pendientes_real").value;
+          console.log(e);
+          var href = `/reporte_mensual/generar_reporte/${b}/${c}/${d}/${e}`;
+          $('#filtro3').attr('href', href);
+        }
+
+        else if (disable2 == false){
+          var b = document.getElementById("Anual").value;
+          console.log(b);
+          var c = document.getElementById("anual").value;
+          console.log(c);
+          var d = document.getElementById("tipo_reporte").value;
+          console.log(d);
+          var e = document.getElementById("aprobados_real").value;
+          console.log(e);
+          var href = `/reporte_mensual/generar_reporte/${b}/${c}/${d}/${e}`;
+          $('#filtro3').attr('href', href);
+        }
+
+        else if (disable3 == false){
+          var b = document.getElementById("Anual").value;
+          console.log(b);
+          var c = document.getElementById("anual").value;
+          console.log(c);
+          var d = document.getElementById("tipo_reporte").value;
+          console.log(d);
+          var e = document.getElementById("rechazados_real").value;
+          console.log(e);
+          var href = `/reporte_mensual/generar_reporte/${b}/${c}/${d}/${e}`;
+          $('#filtro3').attr('href', href);
+        }
+        else{
+          $("#myAlert").css("display", "");
+        }
+      }
+      else{
+        $("#myAlert").css("display", "");
+      }
+    }
+    else{
+      $("#myAlert").css("display", "");
+    }
+
+  });
+});
+
+</script>
+<script src="/js/datepicker.js"></script>
+
+<%- include('includes/foot.ejs') %>

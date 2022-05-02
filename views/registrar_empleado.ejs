@@ -1,0 +1,209 @@
+<%- include('includes/head.ejs') %>
+<%- include('includes/topbar.ejs') %>
+<%- include('includes/sidebar.ejs') %>
+<body>
+  <div class="col py-3">
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <% if (success.length != 0) { %>
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>(っ◔◡◔)っ ❤ </strong> <%= success %>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeAlert()">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+          <% } %>
+          <% if (error.length != 0) { %>
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>┻━┻ ︵ヽ(`▭´)ﾉ︵﻿ ┻━┻   </strong> <%= error %>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeAlert()">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+          <% } %>
+        <section class="container">
+          <h2 class="pt-4 pb-2">Registrar Usuario</h2><br>
+            <form action="/dlc/r_usuario" method="POST">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+              <div class="form-group">
+
+                <div class="form-row">
+                  <div class="col-md-5 mb-3">
+                    <label for="nombres_empleados"><b>Nombre(s)</b></label>
+                    <input type="text" class="form-control" id="nombres_empleados" name="nombres_empleados"  placeholder="Eros Giovanni" autocomplete="off" required/><br>
+                  </div>
+
+                  <div class="col-md-3 mb-3">
+                    <label for="apellido_paterno"><b>Apellido Paterno</b></label>
+                    <input type="text" class="form-control" id="apellido_paterno" name="apellido_paterno" placeholder="Guillén" autocomplete="off" required/><br>
+                  </div>
+
+                  <div class="col-md-3 mb-3">
+                    <label for="apellido_materno"><b>Apellido Materno</b></label>
+                    <input type="text" class="form-control" id="apellido_materno" name="apellido_materno" placeholder="Velázquez" autocomplete="off" required/><br>
+                  </div>
+
+                </div>
+                <br>
+
+                <div class="form-row">
+                  <div class="col-md-3 mb-3">
+                    <label for="genero_empleado"><b>Sexo</b></label>
+                      <select name="genero_empleado" class="form-select" aria-label="Default select example" required>
+                        <option value="" disabled selected>Selecciona Sexo</option>
+                        <option value="H">Hombre</option>
+                        <option value="M">Mujer</option>
+                      </select><br>
+                    </div>
+
+                  <div class="col-md-3 mb-3">
+                    <label for="id_area"><b>Departamento al que pertenece</b></label>   <button class="w3-button w3-circle" style="background-color: #43B02A!important" type="button" data-toggle="modal" data-target="#exampleModal3" data-whatever="@mdo">+</button>
+                      <select name="id_area" class="form-select" aria-label="Default select example" required>
+                        <option value="" disabled selected>Selecciona Departamento</option>
+                          <% for (let area1 of area) { %>
+                        <option value="<%=area1.id_area%>"><%=area1.nombre_area%></option>
+                          <% } %>
+                      </select><br>
+                  </div>
+
+                  <div class="col-md-3 mb-3">
+                    <label for="id_ciudad"><b>Ciudad a la que pertenece</b></label>  <button class="w3-button w3-circle" style="background-color: #43B02A!important" type="button" data-toggle="modal" data-target="#exampleModal4" data-whatever="@mdo">+</button>
+                      <select name="id_ciudad" class="form-select" aria-label="Default select example" required>
+                        <option value="" disabled selected>Selecciona Ciudad</option>
+                          <% for (let ciudad1 of ciudad) { %>
+                        <option value="<%=ciudad1.id_ciudad%>"><%=ciudad1.nombre_ciudad%></option>
+                          <% } %>
+                      </select><br>
+                    </div>
+
+                  <div class="col-md-3 mb-3">
+                    <label for="id_rol"><b>Rol </b></label>
+                      <select name="id_rol" class="form-select" aria-label="Default select example" required>
+                        <option value="" disabled selected>Selecciona Rol</option>
+                          <% for (let rol1 of rol) { %>
+                        <option value="<%=rol1.id_rol%>"><%=rol1.nombre_rol%></option>
+                          <% } %>
+                      </select><br>
+                  </div>
+                </div>
+                <br>
+
+                <div class="form-row">
+                  <div class="col-md-6 mb-3">
+                    <label for="no_empleado"><b>Número de empleado</b></label>
+                    <input type="text" class="form-control" id="no_empleado" name="no_empleado" aria-describedby="emailHelp" placeholder="A01705090" autocomplete="off" required><br>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="correo_empresarial"><b>Correo</b></label>
+                    <input type="email" class="form-control" id="correo_empresarial" name="correo_empresarial" aria-describedby="emailHelp" placeholder="A01703067@natgas.com.mx" autocomplete="off" required><br><br>
+                  </div>
+
+                </div>
+
+
+                <div class="row form-group">
+                      <label for="fecha_nacimiento" class="col-sm-3 col-form-label"><b>Fecha de Nacimiento</b></label>
+                      <div class="col-sm-4">
+                          <div class="input-group date" id="datepicker">
+                              <input type="text" id="fecha_n" name="fecha_n" class="form-control" autocomplete="off" placeholder="DD-MM-YYYY" required>
+                              <span class="input-group-append">
+                                  <span class="input-group-text bg-white">
+                                      <i class="fa fa-calendar"></i>
+                                  </span>
+                              </span>
+                          </div>
+                      </div>
+                  </div><br>
+
+                  <div class="row form-group">
+                        <label for="fecha_contratacion" class="col-sm-3 col-form-label"><b>Fecha de contratación</b></label>
+                        <div class="col-sm-4">
+                            <div class="input-group date" id="datepicker">
+                                <input type="text" id="fecha_c" name="fecha_c" class="form-control" autocomplete="off" placeholder="DD-MM-YYYY" required>
+                                <span class="input-group-append">
+                                    <span class="input-group-text bg-white">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div><br>
+
+                    <!-- PRUEBA SE VA A BORRAR -->
+                    <input type="hidden" id="fecha_nacimiento" name="fecha_nacimiento">
+                    <input type="hidden" id="fecha_contratacion" name="fecha_contratacion">
+                    <input type="hidden" id="ng_blocks_restantes" name="ng_blocks_restantes" value="5">
+                    <input type="hidden" id="dias_vacaciones_restantes" name="dias_vacaciones_restantes" value="8">
+                    <!-- PRUEBA SE VA A BORRAR -->
+              </div>
+              <div style="text-align: left;">
+                <input type="submit" value="Registrar Empleado" class="btn btn-success">
+              </div>
+              </form>
+              <br>
+              <div style="text-align: right;">
+                <a href="/dlc/r_usuario">
+                  <button id="boton1" class="btn btn-dark" onclick=""
+                    href="/dlc/r_usuario">Cancelar Registro</button>
+                </a>
+              </div>
+
+
+              <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel3">Agregar Departamento</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" style="text-align: left;"">
+                          <form action="/dlc/r_usuario/departamento/?_csrf=<%= csrfToken %>" method="POST">
+
+                            <label for="nombre_departamento" class="col-form-label">Nombre del departamento:</label>
+                            <input type="text" class="form-control" id="nombre_departamento" name="nombre_departamento" autocomplete="off" required><br>
+                            <input type="submit" value="Enviar" class="btn btn-primary">
+                          </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel4">Agregar Ciudad</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" style="text-align: left;"">
+                          <form action="/dlc/r_usuario/ciudad/?_csrf=<%= csrfToken %>" method="POST">
+
+                            <label for="nombre_ciudad" class="col-form-label">Nombre de la ciudad:</label>
+                            <input type="text" class="form-control" id="nombre_ciudad" name="nombre_ciudad" autocomplete="off" required><br>
+                            <input type="submit" value="Enviar" class="btn btn-primary">
+                          </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+    </div>
+</body>
+  <script src="/js/datepicker.js"></script>
+  
+
+<%- include('includes/foot.ejs') %>

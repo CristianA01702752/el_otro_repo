@@ -1,0 +1,95 @@
+<%- include('includes/head.ejs') %>
+<%- include('includes/topbar.ejs') %>
+<%- include('includes/sidebar.ejs') %>
+<body>
+  <div class="col py-3">
+    <div height class="container">
+      <% if (success.length != 0) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>(っ◔◡◔)っ ❤ </strong> <%= success %>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeAlert()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <% } %>
+        <% if (error.length != 0) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>┻━┻ ︵ヽ(`▭´)ﾉ︵﻿ ┻━┻   </strong> <%= error %>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeAlert()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <% } %>
+      <h1 class="display-4"><center>Solicitudes de vacaciones</center></h1>
+      <br>
+
+    <% if (vacaciones.length == 0) { %>
+      <h2 class="display-4"><center>No has solicitado vacaciones</center></h2>
+    <% } %>
+
+    <div class="card-columns">
+      <% if (vacaciones.length > 0) { %>
+        <% for (let vacaciones1 of vacaciones) { %>
+          <% if (vacaciones1.estatus_vacaciones === "Pendiente") { %>
+            <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                  <form action="/dlc/profile/vacaciones_solicitadas/delete/<%= vacaciones1.folio %>" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                    <input type="hidden" id="folio" name="folio" value="<%= vacaciones1.folio %>"/>
+                    <div style="text-align: right;">
+                      <button class="btn btn-danger btn-sm rounded-0" type="submit" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="fa fa-trash"></i></button>
+                    </div>
+                  </form>
+          <% } else if (vacaciones1.estatus_vacaciones === "Aprobado") { %>
+            <div class="card text-white bg-success mb-3" style="max-width: 18rem;" style="background-color:#43B02A">
+          <% } else if (vacaciones1.estatus_vacaciones === 'Rechazado') { %>
+            <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+          <% } else { %>
+            <div class="card">
+          <% } %>
+            <div class="card-header"><%= vacaciones1.estatus_vacaciones %></div>
+              <div class="card-body">
+                <p class="card-text"><b>Fecha de uso: </b><%= vacaciones1.fecha_solicitud%></p>
+                <p class="card-text"><b>Primer día de vacaciones: </b><%= vacaciones1.fecha_primer_dia %></p>
+                <p class="card-text"><b>Último día de vacaciones: </b><%= vacaciones1.fecha_ultimo_dia %></p>
+                <p class="card-text"><b>Días solicitados: </b><%= vacaciones1.dias_solicitados %></p>
+                <p class="card-text"><b>Responsable durante ausencia: </b><%= vacaciones1.responsable_ausencia %></p>
+                <p class="card-text"><b>Observaciones: </b><%= vacaciones1.observaciones %></p>
+                <p class="card-text"><b>Estatus de la solicitud: </b><%= vacaciones1.estatus_vacaciones %></p>
+              </div>
+            </div>
+          </div<br><br>
+        <% } %>
+      <% } %>
+    </div>
+    <% if (pages > 0) { %>
+    <nav aria-label="Paginación solicitudes">
+      <ul class="pagination justify-content-center">
+        <% if (current == 1) { %>
+        <li class="page-item disabled">
+          <a class="page-link">First</a>
+          </li>
+        <% } else { %>
+        <li class="page-item"><a class ="page-link" href="/dlc/profile/vacaciones_solicitadas/1">Primero</a></li>
+        <% } %> <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+        <% if (i !== 1) { %>
+        <li class="page-item disabled"><a class="page-link">...</a></li>
+        <% } %> <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+        <% if (i == current) { %>
+        <li class="page-item active"><a class="page-link"><%= i %></a></li>
+        <% } else { %>
+        <li><a class="page-link" href="<%=i%>"><%=i%></a></li>
+        <% } %> <% if (i == Number(current) + 4 && i < pages) { %>
+        <li class="page-item disabled"><a class="page-link">...</a></li>
+        <% } %> <% } %> <% if (current == pages) { %>
+        <li class="page-item disabled"><a class="page-link">Last</a></li>
+        <% } else { %>
+        <li><a class="page-link" href="/dlc/profile/vacaciones_solicitadas/<%= pages %>">Último</a></li>
+        <% } %>
+        <% } %>
+        </ul>
+    </nav>
+  </div>
+</div>
+</body>
+
+<%- include('includes/foot.ejs') %>

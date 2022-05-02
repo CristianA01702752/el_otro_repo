@@ -1,0 +1,91 @@
+<%- include('includes/head.ejs') %>
+<%- include('includes/topbar.ejs') %>
+<%- include('includes/sidebar.ejs') %>
+
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <section class="container">
+        <div class="col-sm-9">
+        <% if (success.length != 0) { %>
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>(っ◔◡◔)っ ❤ </strong> <%= success %>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeAlert()">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+          <% } %>
+          <% if (error.length != 0) { %>
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>┻━┻ ︵ヽ(`▭´)ﾉ︵﻿ ┻━┻   </strong> <%= error %>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeAlert()">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+          <% } %>
+        </div>
+          <h1 class="pt-4 pb-2">Solicitud de NG Block</h1>
+          <br>
+          <br>
+            <% for (let empleado1 of empleado) { %>
+              <div class="row form-group">
+                  <label for="ng_blockR1" class="col-sm-3 col-form-label">Ng blocks restantes</label>
+                  <div class="col-sm-2">
+                  <input type="text" class="form-control" name="ng_blockR1" id="ng_blockR1" value="<%= empleado1.ng_blocks_restantes %>" style="width: 30%;" disabled>
+                </div>
+                <div class="col-sm-8">
+                  </div>
+              </div>
+            <% } %>
+          <br>
+          <!--Empieza form -->
+          <form action="/dlc/solicitar_ng_block" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+
+            <div class="row form-group">
+                  <label for="fecha_uso_ng_block" class="col-sm-3 col-form-label"><b>Elige la fecha*</b></label>
+                  <div class="col-sm-4">
+                      <div class="input-group date" id="datepicker">
+                          <input type="text" id="fecha_ng" name="fecha_ng" class="form-control" autocomplete="off" placeholder="DD-MM-YYYY" required>
+                          <span class="input-group-append">
+                              <span class="input-group-text bg-white">
+                                  <i class="fa fa-calendar"></i>
+                              </span>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="row form-group">
+                <label for="turno_ng_block" class="col-sm-3 col-form-label"><b>Elige el turno*</b></label>
+                <div class="col-sm-4">
+                <select name="turno_ng_block" class="form-select" aria-label="Default select example" required>
+                  <option value="" disabled selected>Elige turno del día</option>
+                  <option value="Matutino">Matutino (De 7:00 a 14:00 HRS.)</option>
+                  <option value="Vespertino">Vespertino (De 14:00 a 20:00 HRS.)</option>
+                </select>
+              </div>
+            </div>
+            <div class="text">
+                <label for="descripcion_ng_block" class="col-form-label"><b>Motivo de uso*</b></label>
+              <br>
+              <textarea id="descripcion_ng_block" name="descripcion_ng_block" rows="6" cols="70" required></textarea>
+            </div>
+            <input type="hidden" id="fecha_uso_ng_block" name="fecha_uso_ng_block">
+            <br>
+            <input type="submit" value="Solicitar" class="btn btn-success">
+          </form>
+          <!--Termina form -->
+          <br><br>
+          <div style="text-align: center;">
+            <a href="/dlc/solicitar_ng_block">
+              <button id="boton1" class="btn btn-dark" onclick="" href="/dlc/solicitar_ng_block">Cancelar Solicitud</button>
+            </a>
+          </div>
+      </section>
+    </div>
+  </div>
+
+<script src="/js/datepicker.js"></script>
+
+
+<%- include('includes/foot.ejs') %>

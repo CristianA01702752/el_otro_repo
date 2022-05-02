@@ -1,0 +1,103 @@
+<%- include('includes/head.ejs') %>
+  <%- include('includes/topbar.ejs') %>
+    <%- include('includes/sidebar.ejs') %>
+
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <div class="col-sm-9">
+            <% if (success.length != 0) { %>
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      <strong>(っ◔◡◔)っ ❤ </strong> <%= success %>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeAlert()">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+              <% } %>
+              <% if (error.length != 0) { %>
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      <strong>┻━┻ ︵ヽ(`▭´)ﾉ︵﻿ ┻━┻   </strong> <%= error %>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeAlert()">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+              <% } %>
+              </div>
+            <section class="container">
+              <h1 class="pt-4 pb-2">Solicitud de Vacaciones</h1>
+              <br>
+              <br>
+              <br>
+              <% for (let empleadoV1 of empleadoV) { %>
+                <div class="container-fluid">
+                  <div class="row form-group">
+                    <label for="vacaciones_R1" class="col-sm-4 col-form-label">Vacaciones totales restantes</label>
+                    <div class="col-sm-2">
+                    <input type="text" class="form-control" name="vacaciones_R1" id="vacaciones_R1" value="<%= empleadoV1.dias_vacaciones_restantes + empleadoV1.dias_vacaciones_especiales%>" style="width: 30%;" disabled>
+                  </div>
+                  <div class="col-sm-6">
+                    </div>
+                </div>
+              </div>
+              <% } %>
+              <br>
+              <br>
+                <div class="container-fluid">
+                    <form>
+                        <div class="row form-group">
+                              <label for="all_dates" class="col-sm-4 col-form-label"><b>Elige las fechas*</b></label>
+                              <div class="col-sm-3">
+                                  <div class="input-group date" id="datepicker">
+                                      <input type="text" id="all_dates" name="all_dates" class="form-control" autocomplete="off" placeholder="DD-MM-YYYY" required>
+                                      <span class="input-group-append">
+                                          <span class="input-group-text bg-white">
+                                              <i class="fa fa-calendar"></i>
+                                          </span>
+                                      </span>
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                  <div>
+                    <br>
+                      <!-- Inicia form-->
+                      <form action="/dlc/s_vacaciones" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                        <div class="row form-group">
+                          <label for="responsable_ausencia" class="col-sm-4 col-form-label"><b>Responsable durante tu ausencia*</b></label>
+                          <div class="col-sm-3">
+                            <select name="responsable_ausencia" class="form-select" aria-label="Default select example" required>
+                              <option value="" disabled selected>Responsable</option>
+                              <% for (let empleado1 of empleado) { %>
+                                  <option value="<%=empleado1.nombres_empleados%> <%=empleado1.apellido_paterno%> <%=empleado1.apellido_materno%>"><%=empleado1.nombres_empleados%> <%=empleado1.apellido_paterno%> <%=empleado1.apellido_materno%></option>
+                              <% } %>
+                            </select>
+                          </div>
+                        </div>
+                      <br><br>
+                      <!-- DATOS FAKE-->
+                      <input type="hidden" id="fecha_ultimo_dia" name="fecha_ultimo_dia">
+                      <input type="hidden" id="fecha_primer_dia" name="fecha_primer_dia">
+                      <input type="hidden" id="fecha_u2" name="fecha_u2">
+                      <input type="hidden" id="fecha_p2" name="fecha_p2">
+                      <input type="hidden" id="dias_solicitados" name="dias_solicitados">
+                      <!-- DATOS FAKE-->
+                      <input type="submit" value="Solicitar" class="btn btn-success" >
+                    </form>
+                  </div>
+                </div>
+
+              <!-- Termina form-->
+
+              <br><br>
+              <div style="text-align: center;">
+                <a href="/dlc/s_vacaciones">
+                  <button id="boton1" class="btn btn-dark" onclick=""
+                    href="/dlc/s_vacaciones">Cancelar Solicitud</button>
+                </a>
+              </div>
+            </section>
+          </div>
+        </div>
+      <script src="/js/rangedate.js"></script>
+
+      <%- include('includes/foot.ejs') %>
