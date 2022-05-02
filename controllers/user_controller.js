@@ -102,16 +102,15 @@ exports.post_signup = (request, response, next) => {
                         nuevo_usuario.save()
                         .then(() => {
                             console.log("Se guardo la solicitud");
-                            //request.flash('success', 'Se registró el usuario con éxito');
+                            request.flash('success', 'Se registró el usuario con éxito');
                             response.redirect('/users/login');
                         }).catch(err => console.log(err));
                     }
-                    request.flash('error', 'El token no coincide');
-                    response.redirect('/users/signup');
-                }).catch(err => {
+                    else {
                       request.flash('error', 'El token no coincide');
                       response.redirect('/users/signup');
-                });
+                    }
+                }).catch(err => console.log(err));
               }
             }).catch(err => console.log(err));
         }).catch(err => console.log(err));
