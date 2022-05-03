@@ -47,8 +47,10 @@
             </span>
         </div> -->
         <div class="col-auto">
-        <form action="/dlc/a_vacacionesp/download" method="POST">
+        <form action="/dlc/a_vacacionesp/download/?_csrf=<%= csrfToken %>" method="POST">
+
           <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+
             <div class="input-group date" id="datepicker">
                 <input type="text" id="search_d" name="search_d" class="form-control" autocomplete="off" placeholder="MM-YYYY">
                 <input type="hidden" id="search_date" name="search_date">
@@ -59,10 +61,12 @@
                 </span>
             </div>
           </div>
-          <di v class="col-auto">
+          <div class="col-auto">
             <input type="submit" value="Descargar" class="btn btn-success"/>
           </div>
+          </form>
         </div>
+
 
 
 

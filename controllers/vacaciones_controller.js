@@ -2,6 +2,8 @@ const Empleado = require('../models/empleado');
 const Vacaciones = require('../models/vacaciones');
 const Prestaciones = require('../models/prestaciones');
 const Area = require('../models/area');
+const fastcsv = require('fast-csv');
+const fs = require('fs');
 //------------------------GET Solicitar Vacaciones--------------------------------
 exports.get_solicitar_vacaciones = (request, response, next) => {
     const no_empleado = request.session.user_no_empleado;
@@ -483,10 +485,32 @@ exports.post_delete_vacaciones_solicitadas = (request, response, next) => {
 
 exports.get_download_vacations = (request, response, next) => {
     console.log('GET /dlc/vacaciones_solicitadas/download');
-    const range_date = request.body.folio;
+    const range_date = request.body.search_date;
+    console.log(range_date.slice(0,-3));
+    if (range_date.length == 0 ){
+      request.flash('error', 'No se recibió ningún dato.');
+      response.redirect('/dlc/a_vacacionesp/1');
+    }
 
-    Vacaciones.downloadVacations(range_date)
-    .then(([rows, fielData])=>{
-        console.log(rows[0]);
-    }).catch(err => console.log(err));
+    else {
+        Vacaciones.downloadVacations(range_date.slice(0,-3))
+        .then(([rows, fielData])=>{
+            const data = JSON.parse(JSON.stringify(rows));
+            var ws = fs.createWriteStream('public/Solicitudes_Vacaciones.csv');
+            fastcsv
+              .write(data, {headers:true})
+              .on('finish', function() {
+                console.log(rows.length);
+                const file = `${__dirname}/../public/Solicitudes_Vacaciones.csv`;
+                response.redirect('/dlc/a_vacacionesp/1');
+            }).pipe(ws);
+        }).catch(err => console.log(err));
+    }
+    //response.download(file);
 };
+
+
+exports.download = (request, response, next) => {
+    const file = `${__dirname}/../public/Solicitudes_Vacaciones.csv`;
+    response.download(file);
+}
