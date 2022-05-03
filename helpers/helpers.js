@@ -1,6 +1,6 @@
 const util = require('util')
 const gc = require('../config/')
-const bucket = gc.bucket('dlc-itesm.appspot.com')
+const bucket = gc.bucket('dlc-itesm.appspot.com')//CREDENCIALES PARA SUBIR FOTOS, NECESITAS CREARLA
 
 const { format } = util
 
