@@ -34,7 +34,7 @@ module.exports = class Empleado {
     static search() {
         return db.execute('SELECT a.nombre_area, e.no_empleado, e.nombres_empleados, e.apellido_paterno, e.apellido_materno, correo_empresarial ' +
         'FROM empleado e, area a ' +
-        'WHERE a.id_area = e.id_area ' +
+        'WHERE a.id_area = e.id_area AND e.activo = 1 ' +
         'LIMIT 15 ' );
     }
 
@@ -42,7 +42,7 @@ module.exports = class Empleado {
         return db.execute(
             `SELECT r.nombre_rol, e.no_empleado, ng_blocks_restantes, correo_empresarial, nombres_empleados, apellido_paterno, apellido_materno, dias_vacaciones_restantes, genero_empleado, nombre_area, date_format(fecha_contratacion, '%d/%m/%Y') as fecha_contratacion, date_format(fecha_nacimiento, '%d/%m/%Y') as fecha_nacimiento, dias_vacaciones_especiales ` +
             'FROM empleado e, area a, rol r ' +
-            'WHERE r.id_rol = e.id_rol AND e.id_area = a.id_area AND e.no_empleado=?', [no_empleado]);
+            'WHERE r.id_rol = e.id_rol AND e.activo = 1 AND e.id_area = a.id_area AND e.no_empleado=?', [no_empleado]);
     }
 
     static fetchEmpleadoArea(id_area) {

@@ -15,7 +15,7 @@ function getAllDaysInMonth(year, month) {
 }
 
 getLongMonthName = function(date) {
-    return real_meses[date.getMonth()+1];
+    return real_meses[date.getMonth()];
 }
 
 getShortMonthName = function(date) {
@@ -209,8 +209,14 @@ exports.get_generar_reporte = (request, response, next) => {
                 Reportes_mensuales.generarReporteMensual(columna, columna_estatus, tabla, fecha, estatus)
                 .then(([rows, fieldData]) => {
                   var dt = fecha;
-                  dt = new Date(dt);
-                  daysInMonth = new Date(dt.getFullYear(), dt.getMonth() + 1, 0).getDate();
+                  var cut_month = dt.slice(5);
+                  var cut_year = dt.slice(0, -3);
+                  //console.log(p);
+                  //console.log(prueba);
+                  var cut_fecha = new Date(cut_year, cut_month-1, 01);
+                  //console.log(cpp);
+                  //dt = new Date(dt);
+                  daysInMonth = new Date(cut_fecha.getFullYear(), cut_fecha.getMonth(), 0).getDate();
                   let days = [];
                   for (let i = 1; i <= daysInMonth; i++){
                     days.push(i);
@@ -219,16 +225,18 @@ exports.get_generar_reporte = (request, response, next) => {
                   for (let data of rows){
                       dates.push(data.fecha);
                   }
-                  var dt = new Date();
-                  var month = dt.getMonth();
-                  var year = dt.getFullYear();
-                  daysInMonth = new Date(year, month, 0).getDate();
+                  //var dt = new Date();
+                  var month = cut_fecha.getMonth();
+                  console.log(month);
+                  var year = cut_fecha.getFullYear();
+                  console.log(year);
+                  //daysInMonth = new Date(year, month, 0).getDate();
 
                   let a = getAllDaysInMonth(year, month);
 
                   let coincidences = [];
-                  let xLabel = "Días del mes de " + getLongMonthName(new Date(fecha));
-                  let tittle = "Solicitudes de " + tabla + " de " + getLongMonthName(new Date(fecha)) + " con estatus " + estatus;
+                  let xLabel = "Días del mes de " + getLongMonthName(new Date(cut_fecha));
+                  let tittle = "Solicitudes de " + tabla + " de " + getLongMonthName(new Date(cut_fecha)) + " con estatus " + estatus;
                   coincidences = getCoincidences(a, dates);
 
                   response.render('generar_reporte', {

@@ -347,3 +347,16 @@ exports.listar = (request, response, next) => {
     }).catch(err => console.log(err));
 };
 //------------------------Main--------------------------------
+
+//------------------------Borrar Empleado----------------------------------
+exports.post_delete_empleado = (request, response, next) => {
+    console.log('POST /dlc/buscar_empleado/delete/:no_empleado');
+    const no_empleado = request.params.no_empleado;
+    Empleado.eliminarEmpleado(no_empleado)
+    .then(() => {
+        console.log("Se elimino el empleado");
+        request.flash('success', 'El empleado se eliminó con éxito');
+        response.redirect('/dlc/buscar_empleado');
+    }).catch(err => console.log(err));
+};
+//------------------------Borrar Empleado----------------------------------
