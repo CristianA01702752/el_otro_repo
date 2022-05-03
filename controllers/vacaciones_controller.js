@@ -488,7 +488,7 @@ exports.get_download_vacations = (request, response, next) => {
     const range_date = request.body.search_date;
     console.log(range_date.slice(0,-3));
     if (range_date.length == 0 ){
-      request.flash('error', 'No se recibió ningún dato.');
+      request.flash('error', 'No seleccionaste ninguna fecha.');
       response.redirect('/dlc/a_vacacionesp/1');
     }
 
@@ -502,7 +502,7 @@ exports.get_download_vacations = (request, response, next) => {
               .write(data, {headers:true})
               .on('finish', function() {
                 console.log(rows.length);
-                
+
 
             }).pipe(ws);
             return response.download(`${__dirname}/../public/Solicitudes_Vacaciones.csv`);
