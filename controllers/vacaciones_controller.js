@@ -494,16 +494,18 @@ exports.get_download_vacations = (request, response, next) => {
 
     else {
         Vacaciones.downloadVacations(range_date.slice(0,-3))
-        .then(([rows, fielData])=>{
+        .then(async ([rows, fielData])=>{
             const data = JSON.parse(JSON.stringify(rows));
             var ws = fs.createWriteStream('public/Solicitudes_Vacaciones.csv');
-            fastcsv
+
+            await fastcsv
               .write(data, {headers:true})
               .on('finish', function() {
                 console.log(rows.length);
-                const file = `${__dirname}/../public/Solicitudes_Vacaciones.csv`;
-                response.redirect('/dlc/a_vacacionesp/1');
+                
+
             }).pipe(ws);
+            return response.download(`${__dirname}/../public/Solicitudes_Vacaciones.csv`);
         }).catch(err => console.log(err));
     }
     //response.download(file);
