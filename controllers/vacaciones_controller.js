@@ -480,3 +480,13 @@ exports.post_delete_vacaciones_solicitadas = (request, response, next) => {
         }
     }).catch((error)=>{console.log(error)});
 };
+
+exports.get_download_vacations = (request, response, next) => {
+    console.log('GET /dlc/vacaciones_solicitadas/download');
+    const range_date = request.body.folio;
+
+    Vacaciones.downloadVacations(range_date)
+    .then(([rows, fielData])=>{
+        console.log(rows[0]);
+    }).catch(err => console.log(err));
+};
