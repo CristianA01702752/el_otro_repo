@@ -83,7 +83,7 @@ exports.post_publicacion_sin_imagen = (request, response, next) => {
 //------------------------DELETE publicacion--------------------------------
 exports.post_delete_publicacion = (request, response, next) => {
     console.log('POST /dlc/publicacion/delete/:id_publicacion');
-    const id_publicacion = request.body.id_publicacion;
+    const id_publicacion = request.params.id_publicacion;
     Publicacion.deletePublicacion(id_publicacion)
     .then(() => {
         console.log("Se elimino el anuncio");

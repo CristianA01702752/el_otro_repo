@@ -461,6 +461,7 @@ exports.get_vacaciones_solicitadas = (request, response, next) => {
 exports.post_delete_vacaciones_solicitadas = (request, response, next) => {
     console.log('POST /dlc/vacaciones_solicitadas/delete/:folio');
     const folio = request.body.folio;
+    console.log(folio);
     const no_empleado = request.session.user_no_empleado;
     Vacaciones.getEstatus(no_empleado, folio)
     .then(([rows, fielData])=>{
@@ -468,7 +469,7 @@ exports.post_delete_vacaciones_solicitadas = (request, response, next) => {
 
         if (estatus_vacaciones == 'Aprobado' || estatus_vacaciones == 'Rechazado'){
             request.flash('error', 'No puedes eliminar una solicitud de Vacaciones que esté en estatus Aprobado o Rechazado');
-            response.redirect('/dlc/profile/vacaciones_solicitadas');
+            response.redirect('/dlc/profile/vacaciones_solicitadas/1');
         }
 
         else {
@@ -477,7 +478,7 @@ exports.post_delete_vacaciones_solicitadas = (request, response, next) => {
             .then(() => {
                 console.log("Se elimino la solicitud");
                 request.flash('success', 'La solicitud de vacaciones se eliminó con éxito');
-                response.redirect('/dlc/profile/vacaciones_solicitadas');
+                response.redirect('/dlc/profile/vacaciones_solicitadas/1');
             }).catch(err => console.log(err));
         }
     }).catch((error)=>{console.log(error)});

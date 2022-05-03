@@ -253,6 +253,8 @@ exports.get_buscar_empleado = (request, response, next) => {
             .then(([rows, fieldData]) => {
                 console.log(rows);
                 response.render('buscar_empleado', {
+                  success: request.flash("success"),
+                  error: request.flash("error"),
                     userRol: rol[0].id_rol,
                     empleado: rows,
                     isLoggedIn: request.session.isLoggedIn === true ? true : false

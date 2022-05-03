@@ -13,7 +13,7 @@ module.exports = class Ng_Block {
 
     //Este método servirá para guardar de manera persistente el nuevo objeto.
     save() {
-      return db.execute('INSERT INTO ng_block (no_empleado, turno_ng_block, descripcion_ng_block, fecha_uso_ng_block) VALUES (?, ?, ?, ?)',
+      return db.execute('INSERT INTO ng_block (no_empleado, turno_ng_block, descripcion_ng_block, fecha_uso_ng_block, , fecha_solicitud_ng_block) VALUES (?, ?, ?, ?, , curdate())',
           [this.no_empleado, this.turno_ng_block, this.descripcion_ng_block, this.fecha_uso_ng_block]);
     }
 
@@ -40,11 +40,8 @@ module.exports = class Ng_Block {
         return db.execute(
           'UPDATE ng_block ' +
           'SET estatus_ng_block = ? ' +
-          'WHERE id_ng_block = ? ' +
-          'ORDER BY fecha_solicitud DESC ' +
-          'LIMIT ? OFFSET ?', [no_empleado, num_solicitudes, num_offset]);
+          'WHERE id_ng_block = ? ', [estatus_ng_block, id_ng_block]);
     }
-
     static aproveeNGBlock(estatus_ng_block, id_ng_block, no_empleado) {
         return db.execute(
           'UPDATE ng_block, empleado ' +

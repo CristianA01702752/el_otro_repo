@@ -41,6 +41,7 @@ router.post('/vacaciones_totales/:id_prestaciones', isAuth, vacaciones_controlle
 router.post('/vacaciones_totales/delete/:id_prestaciones', isAuth, vacaciones_controller.post_delete_vacaciones_totales);
 router.post('/vacaciones_totales/add/aaaaaaa', isAuth, vacaciones_controller.post_add_vacaciones_totales);
 router.get('/profile/vacaciones_solicitadas/:page', isAuth, vacaciones_controller.get_vacaciones_solicitadas);
+router.post('/profile/vacaciones_solicitadas/delete/:folio', isAuth, vacaciones_controller.post_delete_vacaciones_solicitadas);
 router.post('/a_vacacionesp/download', isAuth, vacaciones_controller.get_download_vacations);
 
 
