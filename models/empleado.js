@@ -45,11 +45,11 @@ module.exports = class Empleado {
             'WHERE r.id_rol = e.id_rol AND e.activo = 1 AND e.id_area = a.id_area AND e.no_empleado=?', [no_empleado]);
     }
 
-    static fetchEmpleadoArea(id_area) {
+    static fetchEmpleadoArea(id_area, no_empleado) {
       return db.execute(
         'SELECT a.id_area, e.nombres_empleados, e.apellido_paterno, e.apellido_materno ' +
         'FROM empleado e, area a ' +
-        'WHERE a.id_area = e.id_area AND e.id_area = ? ' ,[id_area]);
+        'WHERE a.id_area = e.id_area AND e.id_area = ? AND e.no_empleado != ? ' ,[id_area, no_empleado]);
     }
 
     static getAreaEmpleado(no_empleado) {
@@ -67,7 +67,7 @@ module.exports = class Empleado {
         return db.execute(
           'SELECT a.nombre_area, e.no_empleado, e.nombres_empleados, e.apellido_paterno, e.apellido_materno, correo_empresarial '+
           'FROM empleado e, area a ' +
-          'WHERE a.id_area = e.id_area AND (a.nombre_area LIKE ? OR e.no_empleado LIKE ? OR e.nombres_empleados LIKE ?)', ['%'+search+'%', '%'+search+'%', '%'+search+'%', ]);
+          'WHERE a.id_area = e.id_area AND e.activo = 1 AND (a.nombre_area LIKE ? OR e.no_empleado LIKE ? OR e.nombres_empleados LIKE ?)', ['%'+search+'%', '%'+search+'%', '%'+search+'%', ]);
     }
 
     static getBlocksR(no_empleado) {
@@ -139,5 +139,9 @@ module.exports = class Empleado {
         'SELECT e.id_ciudad ' +
         'FROM empleado e, ciudad c ' +
         'WHERE e.id_ciudad = c.id_ciudad AND e.no_empleado = ? ' ,[no_empleado]);
+    }
+
+    static eliminarEmpleado(no_empleado) {
+      return db.execute('UPDATE empleado SET activo = 0 WHERE no_empleado= ?;', [no_empleado]);
     }
 }
