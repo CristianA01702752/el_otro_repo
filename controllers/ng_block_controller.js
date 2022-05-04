@@ -95,7 +95,7 @@ exports.get_aprobar_ng_blocks_pagination = (request, response, next) => {
                     .then(([area, fieldData]) => {
                         Ng_Block.fetchPagination2(depar, estado, no_empleado, perPage, ((perPage * page) - perPage))
                         .then(([ng_block, fieldData]) => {
-                            Ng_Block.count3(depar, estado, empleado)
+                            Ng_Block.count3(depar, estado, no_empleado)
                             .then(([count, fieldData]) => {
                                 const depar = departamento[0].id_area;
                                 const estado = ciudad[0].id_ciudad;

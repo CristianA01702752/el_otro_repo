@@ -256,7 +256,7 @@
   function submitForm() {
     return confirm('¿Realmente quieres eliminar el reporte mensual?');
   }
-  
+
   function showAlert(){
       $("#myAlert").css("display", "");
   }
@@ -272,7 +272,8 @@
         startView: "months",
         minViewMode: "months",
         todayHighlight: true,
-        autoclose: true
+        autoclose: true,
+        endDate: new Date()
       });
       $('#search_d').on("changeDate", function search () {
         var f1 = $('#search_d').datepicker('getDate');
